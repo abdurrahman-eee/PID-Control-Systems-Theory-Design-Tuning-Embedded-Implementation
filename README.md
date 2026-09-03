@@ -1,1133 +1,1206 @@
-# PID Control Systems — Theory, Design, Tuning & Embedded Implementation
+# Calculus for PID & Control Engineering
 
-A structured, from-the-roots learning path for PID control: theory → math → tuning → real embedded code (STM32).
+**Derivative + Integration + PID Control**  
+**ডেরিভেটিভ + ইন্টিগ্রেশন + PID কন্ট্রোল**
 
-```
-pid-control-systems/
-│
-├── 01-Fundamentals/
-├── 02-Derivative-and-Integral/     ← PID Cheat Sheet lives here
-├── 03-P-PI-PID-Control/
-├── 04-System-Modeling/
-├── 05-PID-Tuning/
-├── 06-Current-Control/
-├── 07-Speed-Control/
-├── 08-Position-Control/
-├── 09-Simulations/
-├── 10-Embedded-Implementation/
-├── 11-STM32-Examples/
-├── 12-Practical-Projects/
-└── README.md
-```
-
-Start with [`02-Derivative-and-Integral/PID-Cheat-Sheet.md`](02-Derivative-and-Integral/PID-Cheat-Sheet.md) for a quick, worked-example explanation of P, I, D and the full PID formula.
-
-
-
-<div align="center">
-
-# 📘 Calculus for Control Engineers
-### Derivative • Integration • PID Control  
-### ডেরিভেটিভ • ইন্টিগ্রেশন • PID কন্ট্রোল
-
-**A practical, engineering-focused guide with formulas, intuition, examples, and PID applications.**  
-**সহজ ব্যাখ্যা, সূত্র, উদাহরণ এবং PID Control-এর ব্যবহারসহ একটি practical guide।**
-
-</div>
+A compact, practical guide for understanding calculus in control engineering without memorizing formulas blindly.  
+Control engineering-এ calculus কেন লাগে, কোন rule কখন ব্যবহার করতে হয়, এবং PID-এর সাথে এর সম্পর্ক — সহজভাবে দেখানো হয়েছে।
 
 ---
 
-## 📌 Table of Contents
+## 1. Core Idea | মূল ধারণা
 
-1. [Core Idea](#-core-idea)
-2. [Derivative Rules](#-derivative-rules)
-3. [Common Derivatives](#-common-derivatives)
-4. [Complete Mixed Derivative Example](#-complete-mixed-derivative-example)
-5. [Integration Rules](#-integration-rules)
-6. [Complete Integration Example](#-complete-integration-example)
-7. [Numerical / Practical Integration](#-numerical--practical-integration)
-8. [Engineering Meaning](#-engineering-meaning)
-9. [PID Connection](#-pid-connection)
-10. [Final Memory Map](#-final-memory-map)
+### Derivative
 
----
-
-# 🧠 Core Idea
-
-## Derivative
-
-> **Derivative = How fast something is changing.**  
-> **ডেরিভেটিভ = কোনো কিছু কত দ্রুত পরিবর্তন হচ্ছে।**
+**Derivative = how fast something is changing.**  
+**Derivative = কোনো কিছু কত দ্রুত পরিবর্তন হচ্ছে।**
 
 Examples:
 
-$$
-\text{Position} \xrightarrow{\frac{d}{dt}} \text{Velocity}
-$$
+```text
+Position  -> derivative -> Velocity
+Velocity  -> derivative -> Acceleration
+Charge    -> derivative -> Current
+Energy    -> derivative -> Power
+```
 
-$$
-\text{Velocity} \xrightarrow{\frac{d}{dt}} \text{Acceleration}
-$$
+Simple idea:
 
-$$
-\text{Charge} \xrightarrow{\frac{d}{dt}} \text{Current}
-$$
+```text
+Derivative ≈ Change / Time
+```
 
-$$
-\text{Energy} \xrightarrow{\frac{d}{dt}} \text{Power}
-$$
+Example:
 
-### Practical idea
+```text
+Position changes from 4 m to 10 m in 2 s
 
-If position changes from $4\,m$ to $9\,m$ in $2\,s$:
-
-$$
-v=\frac{\Delta x}{\Delta t}
-=\frac{9-4}{2}
-=2.5\,m/s
-$$
-
-So derivative is basically:
-
-> **Change ÷ Time**
+Average velocity = (10 - 4) / 2
+                 = 3 m/s
+```
 
 ---
 
-## Integration
+### Integration
 
-> **Integration = Total accumulation.**  
-> **ইন্টিগ্রেশন = ছোট ছোট পরিবর্তন যোগ করে মোট কত হলো।**
+**Integration = total accumulation.**  
+**Integration = ছোট ছোট অংশ যোগ করে মোট কত হলো।**
 
 Examples:
 
-$$
-\text{Velocity} \xrightarrow{\int dt} \text{Distance}
-$$
+```text
+Velocity      -> integration -> Distance
+Current       -> integration -> Charge
+Power         -> integration -> Energy
+Angular speed -> integration -> Angle
+```
 
-$$
-\text{Current} \xrightarrow{\int dt} \text{Charge}
-$$
+Simple idea:
 
-$$
-\text{Power} \xrightarrow{\int dt} \text{Energy}
-$$
+```text
+Integration ≈ Rate × small time + Rate × small time + ...
+```
 
-If current is $2\,A$ for $5\,s$:
+Example:
 
-$$
-Q=\int I\,dt
-$$
+```text
+Current = 2 A
+Time    = 5 s
 
-For constant current:
-
-$$
-Q=2\times5=10\,C
-$$
-
-So integration is basically:
-
-> **Rate × Small Time + Rate × Small Time + ...**
+Charge = 2 × 5
+       = 10 C
+```
 
 ---
 
-# 📐 Derivative Rules
+# 2. Derivative Rules | ডেরিভেটিভের নিয়ম
 
-## 1. Constant Rule
+## Rule 1 — Constant Rule
 
-If:
+Use when the term has no `x`.
 
-$$
-y=C
-$$
+```text
+d/dx (C) = 0
+```
 
-then:
+Example:
 
-$$
-\frac{dy}{dx}=0
-$$
+```text
+d/dx (10) = 0
+```
 
-### Example
+Why?
 
-$$
-\frac{d}{dx}(10)=0
-$$
-
-**Use when:** the term contains no $x$.
+A constant does not change when `x` changes.
 
 ---
 
-## 2. Power Rule
+## Rule 2 — Power Rule
 
-$$
-\frac{d}{dx}(x^n)=nx^{n-1}
-$$
+Use for terms like:
+
+```text
+a x^n
+```
+
+Formula:
+
+```text
+d/dx (x^n) = n x^(n-1)
+```
 
 ### Memory
 
-> **Power সামনে আনো → Power থেকে 1 কমাও**
+```text
+Power সামনে আনো
+Power থেকে 1 কমাও
+```
 
-### Example
+Example:
 
-$$
-\frac{d}{dx}(10x^3)
-$$
+```text
+d/dx (10x^3)
 
-$$
-=10(3)x^{3-1}
-$$
+= 10 × 3x^(3-1)
+= 30x^2
+```
 
-$$
-=30x^2
-$$
+Answer:
 
-**Use when:** the term looks like $ax^n$.
-
----
-
-## 3. Sum / Difference Rule
-
-Differentiate each term separately.
-
-$$
-\frac{d}{dx}[f(x)+g(x)]
-=
-f'(x)+g'(x)
-$$
-
-### Example
-
-$$
-y=5x^4+3x^3-7x^2+6x+10
-$$
-
-Then:
-
-$$
-
-\frac{dy}{dx}
-=
-20x^3+9x^2-14x+6
-
-$$
+```text
+30x^2
+```
 
 ---
 
-## 4. Product Rule
+## Rule 3 — Sum / Difference Rule
+
+Use when several terms are added or subtracted.
+
+Example:
+
+```text
+y = 5x^4 + 3x^3 - 7x^2 + 6x + 10
+```
+
+Differentiate term by term:
+
+```text
+5x^4   -> 20x^3
+3x^3   ->  9x^2
+-7x^2  -> -14x
+6x     ->  6
+10     ->  0
+```
+
+Therefore:
+
+```text
+dy/dx = 20x^3 + 9x^2 - 14x + 6
+```
+
+---
+
+## Rule 4 — Product Rule
 
 Use when **two functions are multiplied**.
 
-If:
+Form:
 
-$$
-y=u\,v
-$$
+```text
+y = u × v
+```
 
-then:
+Formula:
 
-$$
-
-\frac{dy}{dx}=u'v+uv'
-
-$$
+```text
+dy/dx = u'v + uv'
+```
 
 ### Memory
 
-> **First derivative × Second + First × Second derivative**
+```text
+First derivative × Second
++
+First × Second derivative
+```
 
-### Example
+Example:
 
-$$
-y=(2x^2+3)(x^3-4)
-$$
+```text
+y = (2x^2 + 3)(x^3 - 4)
+```
 
 Let:
 
-$$
-u=2x^2+3
-\qquad
-v=x^3-4
-$$
+```text
+u = 2x^2 + 3
+v = x^3 - 4
+```
 
 Then:
 
-$$
-u'=4x
-\qquad
-v'=3x^2
-$$
+```text
+u' = 4x
+v' = 3x^2
+```
 
-So:
+Apply Product Rule:
 
-$$
-y'=(4x)(x^3-4)+(2x^2+3)(3x^2)
-$$
+```text
+y' = (4x)(x^3 - 4) + (2x^2 + 3)(3x^2)
+```
 
-$$
+Expand:
 
-y'=10x^4+9x^2-16x
+```text
+= 4x^4 - 16x + 6x^4 + 9x^2
+```
 
-$$
+Final:
 
-**Use when:**  
-$$
-(\text{function})\times(\text{function})
-$$
+```text
+y' = 10x^4 + 9x^2 - 16x
+```
 
 ---
 
-## 5. Quotient Rule
+## Rule 5 — Quotient Rule
 
 Use when **one function is divided by another**.
 
-If:
+Form:
 
-$$
-y=\frac{u}{v}
-$$
+```text
+y = u / v
+```
 
-then:
+Formula:
 
-$$
-
-\frac{dy}{dx}
-=
-\frac{u'v-uv'}{v^2}
-
-$$
+```text
+dy/dx = (u'v - uv') / v^2
+```
 
 ### Memory
 
-> **Low × D-High − High × D-Low, over Low²**
+```text
+Low × D-High
+-
+High × D-Low
+----------------
+Low^2
+```
 
-### Example
+Example:
 
-$$
-y=\frac{x^2+3}{x+1}
-$$
+```text
+y = (x^2 + 3) / (x + 1)
+```
 
 Let:
 
-$$
-u=x^2+3
-\qquad
-v=x+1
-$$
+```text
+u = x^2 + 3
+v = x + 1
+```
 
 Then:
 
-$$
-u'=2x
-\qquad
-v'=1
-$$
+```text
+u' = 2x
+v' = 1
+```
 
-Therefore:
+Apply Quotient Rule:
 
-$$
-y'
-=
-\frac{(2x)(x+1)-(x^2+3)(1)}
-{(x+1)^2}
-$$
+```text
+y' = [(2x)(x+1) - (x^2+3)(1)] / (x+1)^2
+```
 
-$$
+Simplify:
 
-y'=
-\frac{x^2+2x-3}{(x+1)^2}
+```text
+= [2x^2 + 2x - x^2 - 3] / (x+1)^2
+```
 
-$$
+Final:
 
----
-
-## 6. Chain Rule
-
-Use when there is a **function inside another function**.
-
-If:
-
-$$
-y=f(g(x))
-$$
-
-then:
-
-$$
-
-\frac{dy}{dx}
-=
-f'(g(x))\,g'(x)
-
-$$
-
-### Memory
-
-> **Outside derivative × Inside derivative**  
-> **বাইরের derivative × ভিতরের derivative**
-
-### Example
-
-$$
-y=(3x^2+2)^5
-$$
-
-Outer derivative:
-
-$$
-5(3x^2+2)^4
-$$
-
-Inner derivative:
-
-$$
-6x
-$$
-
-Therefore:
-
-$$
-
-y'=30x(3x^2+2)^4
-
-$$
+```text
+y' = (x^2 + 2x - 3) / (x+1)^2
+```
 
 ---
 
-# 🧾 Common Derivatives
+## Rule 6 — Chain Rule
 
-| Function | Derivative |
-|---|---|
-| $C$ | $0$ |
-| $x^n$ | $nx^{n-1}$ |
-| $\sin x$ | $\cos x$ |
-| $\cos x$ | $-\sin x$ |
-| $\tan x$ | $\sec^2 x$ |
-| $e^x$ | $e^x$ |
-| $\ln x$ | $\frac{1}{x}$ |
+Use when a function is **inside another function**.
 
-### Example: Trigonometric + Chain Rule
+Example shape:
 
-$$
-y=\sin(x^2)
-$$
+```text
+(inside)^power
+sin(inside)
+cos(inside)
+e^(inside)
+```
 
-Outer derivative:
+Formula idea:
 
-$$
-\cos(x^2)
-$$
+```text
+Derivative = Outside derivative × Inside derivative
+```
 
-Inner derivative:
+Example:
 
-$$
+```text
+y = (3x^2 + 2)^5
+```
+
+Step 1 — Differentiate outside:
+
+```text
+5(3x^2 + 2)^4
+```
+
+Step 2 — Differentiate inside:
+
+```text
+d/dx (3x^2 + 2) = 6x
+```
+
+Multiply:
+
+```text
+y' = 5(3x^2 + 2)^4 × 6x
+```
+
+Final:
+
+```text
+y' = 30x(3x^2 + 2)^4
+```
+
+---
+
+# 3. Common Derivatives | সাধারণ ডেরিভেটিভ
+
+```text
+d/dx (C)       = 0
+d/dx (x^n)     = n x^(n-1)
+
+d/dx (sin x)   = cos x
+d/dx (cos x)   = -sin x
+d/dx (tan x)   = sec^2 x
+
+d/dx (e^x)     = e^x
+d/dx (ln x)    = 1/x
+```
+
+Example with Chain Rule:
+
+```text
+y = sin(x^2)
+```
+
+Outside derivative:
+
+```text
+cos(x^2)
+```
+
+Inside derivative:
+
+```text
 2x
-$$
+```
 
-Therefore:
+Final:
 
-$$
-
-y'=2x\cos(x^2)
-
-$$
+```text
+y' = 2x cos(x^2)
+```
 
 ---
 
-# 🔥 Complete Mixed Derivative Example
+# 4. Which Derivative Rule Should I Use?
 
-Consider:
+```text
+Expression type                    Rule
 
-$$
+ax^n                               Power Rule
 
-y=
-\frac{x^2(3x+1)^4}{x+2}
+f(x) + g(x)                        Term-by-term
 
-$$
+f(x) × g(x)                        Product Rule
 
-This contains:
+f(x) / g(x)                        Quotient Rule
 
-- Power Rule
-- Product Rule
-- Chain Rule
-- Quotient Rule
+f(g(x))                            Chain Rule
+```
 
----
+Important:
 
-## Step 1 — Define numerator and denominator
-
-$$
-u=x^2(3x+1)^4
-$$
-
-$$
-v=x+2
-$$
-
-Then:
-
-$$
-y=\frac{u}{v}
-$$
+A single problem can need **more than one rule**.
 
 ---
 
-## Step 2 — Differentiate numerator using Product Rule
+# 5. Complete Mixed Derivative Example
 
-For:
+Find the derivative of:
 
-$$
-u=x^2(3x+1)^4
-$$
+```text
+y = [x^2 (3x + 1)^4] / (x + 2)
+```
+
+This problem uses:
+
+```text
+Power Rule
+Product Rule
+Chain Rule
+Quotient Rule
+```
+
+---
+
+## Step 1 — Split numerator and denominator
+
+```text
+u = x^2 (3x + 1)^4
+v = x + 2
+```
+
+So:
+
+```text
+y = u / v
+```
+
+---
+
+## Step 2 — Differentiate `u`
+
+```text
+u = x^2 (3x + 1)^4
+```
+
+This is multiplication, so use Product Rule.
 
 Let:
 
-$$
-a=x^2
-$$
-
-$$
-b=(3x+1)^4
-$$
+```text
+a = x^2
+b = (3x + 1)^4
+```
 
 Then:
 
-$$
-a'=2x
-$$
+```text
+a' = 2x
+```
 
-For $b$, use Chain Rule:
+For `b`, use Chain Rule:
 
-$$
-b'
-=
-4(3x+1)^3(3)
-$$
-
-$$
-b'=12(3x+1)^3
-$$
+```text
+b' = 4(3x + 1)^3 × 3
+   = 12(3x + 1)^3
+```
 
 Now Product Rule:
 
-$$
-u'
-=
-a'b+ab'
-$$
-
-$$
-u'
-=
-2x(3x+1)^4
-+
-12x^2(3x+1)^3
-$$
-
-Factor:
-
-$$
-
-u'
-=
-2x(3x+1)^3(9x+1)
-
-$$
-
----
-
-## Step 3 — Differentiate denominator
-
-$$
-v=x+2
-$$
+```text
+u' = a'b + ab'
+```
 
 Therefore:
 
-$$
-v'=1
-$$
+```text
+u' = 2x(3x + 1)^4
+   + x^2 × 12(3x + 1)^3
+```
+
+Factor common terms:
+
+```text
+u' = 2x(3x + 1)^3[(3x + 1) + 6x]
+```
+
+So:
+
+```text
+u' = 2x(3x + 1)^3(9x + 1)
+```
+
+---
+
+## Step 3 — Differentiate `v`
+
+```text
+v = x + 2
+```
+
+Therefore:
+
+```text
+v' = 1
+```
 
 ---
 
 ## Step 4 — Apply Quotient Rule
 
-$$
-y'
-=
-\frac{u'v-uv'}{v^2}
-$$
+```text
+y' = (u'v - uv') / v^2
+```
 
-So:
+Substitute:
 
-$$
-y'
-=
-\frac{
-2x(3x+1)^3(9x+1)(x+2)
+```text
+y' =
+{
+2x(3x + 1)^3(9x + 1)(x + 2)
 -
-x^2(3x+1)^4
-}{
-(x+2)^2
+x^2(3x + 1)^4
 }
-$$
+/
+(x + 2)^2
+```
 
-Factor common terms:
+Factor:
 
-$$
-y'
-=
-\frac{
-x(3x+1)^3
-\left[
-2(9x+1)(x+2)-x(3x+1)
-\right]
-}{
-(x+2)^2
-}
-$$
+```text
+y' =
+x(3x + 1)^3
+[
+2(9x + 1)(x + 2)
+-
+x(3x + 1)
+]
+/
+(x + 2)^2
+```
 
-Simplify the bracket:
+Simplify inside bracket:
 
-$$
-2(9x+1)(x+2)-x(3x+1)
-=
-15x^2+37x+4
-$$
-
-Therefore:
-
-$$
-
-\frac{dy}{dx}
-=
-\frac{
-x(3x+1)^3(15x^2+37x+4)
-}{
-(x+2)^2
-}
-
-$$
-
----
-
-# ∫ Integration Rules
-
-## 1. Power Rule
-
-For $n\neq-1$:
-
-$$
-
-\int x^n\,dx
-=
-\frac{x^{n+1}}{n+1}+C
-
-$$
-
-### Memory
-
-> **Power 1 বাড়াও → নতুন power দিয়ে divide করো**
-
-### Example
-
-$$
-\int 12x^3\,dx
-$$
-
-$$
-=
-12\frac{x^4}{4}
-$$
-
-$$
-
-=3x^4+C
-
-$$
-
----
-
-## 2. Constant Rule
-
-$$
-
-\int a\,dx=ax+C
-
-$$
-
-### Example
-
-$$
-\int 6\,dx
-=
-6x+C
-$$
-
----
-
-## 3. Sum / Difference Rule
-
-Integrate each term separately.
-
-### Example
-
-$$
-\int
-(20x^3+9x^2-14x+6)\,dx
-$$
-
-Term by term:
-
-$$
-20x^3
-\rightarrow
-5x^4
-$$
-
-$$
-9x^2
-\rightarrow
-3x^3
-$$
-
-$$
--14x
-\rightarrow
--7x^2
-$$
-
-$$
-6
-\rightarrow
-6x
-$$
-
-Therefore:
-
-$$
-
-5x^4+3x^3-7x^2+6x+C
-
-$$
-
----
-
-## Why $+C$?
-
-Because:
-
-$$
-\frac{d}{dx}(10)=0
-$$
+```text
+2(9x + 1)(x + 2)
+= 18x^2 + 38x + 4
+```
 
 and:
 
-$$
-\frac{d}{dx}(100)=0
-$$
+```text
+x(3x + 1)
+= 3x^2 + x
+```
 
-Therefore derivative loses the original constant.
+Subtract:
 
-So after integration we write:
-
-$$
-+C
-$$
-
-To recover the exact constant, we need an **initial condition**.
-
-Example:
-
-$$
-y(0)=10
-$$
-
-Then:
-
-$$
-C=10
-$$
-
----
-
-## 4. Special Integrals
-
-| Function | Integral |
-|---|---|
-| $x^n$ | $\frac{x^{n+1}}{n+1}+C$ |
-| $\frac{1}{x}$ | $\ln|x|+C$ |
-| $e^x$ | $e^x+C$ |
-| $\sin x$ | $-\cos x+C$ |
-| $\cos x$ | $\sin x+C$ |
-
----
-
-# ✅ Complete Integration Example
-
-Evaluate:
-
-$$
-\int
-\left(
-12x^3
+```text
+18x^2 + 38x + 4
 -
-6x^2
-+
-2x^{-1/2}
--
-5x^{-2}
-\right)
-dx
-$$
-
-### First term
-
-$$
-\int12x^3dx
+3x^2 - x
 =
-3x^4
-$$
-
-### Second term
-
-$$
-\int-6x^2dx
-=
--2x^3
-$$
-
-### Third term
-
-$$
-\int2x^{-1/2}dx
-$$
-
-Increase power:
-
-$$
--\frac12+1=\frac12
-$$
-
-Therefore:
-
-$$
-=
-2\frac{x^{1/2}}{1/2}
-=
-4x^{1/2}
-$$
-
-$$
-=4\sqrt{x}
-$$
-
-### Fourth term
-
-$$
-\int-5x^{-2}dx
-$$
-
-$$
-=
--5\frac{x^{-1}}{-1}
-$$
-
-$$
-=
-5x^{-1}
-=
-\frac{5}{x}
-$$
+15x^2 + 37x + 4
+```
 
 Final answer:
 
-$$
-
-3x^4-2x^3+4\sqrt{x}+\frac5x+C
-
-$$
-
----
-
-# 📊 Numerical / Practical Integration
-
-Real sensor data is usually **not constant**.
-
-Suppose velocity is measured:
-
-| Time | Velocity |
-|---:|---:|
-| $0s$ | $4\,m/s$ |
-| $1s$ | $6\,m/s$ |
-| $2s$ | $10\,m/s$ |
-
-Using the trapezoidal method:
-
-### From 0 to 1 s
-
-$$
-d_1
-=
-\frac{4+6}{2}(1)
-=
-5\,m
-$$
-
-### From 1 to 2 s
-
-$$
-d_2
-=
-\frac{6+10}{2}(1)
-=
-8\,m
-$$
-
-Total:
-
-$$
-
-d=5+8=13\,m
-
-$$
-
-This is **numerical integration**.
+```text
+y' =
+x(3x + 1)^3(15x^2 + 37x + 4)
+/
+(x + 2)^2
+```
 
 ---
 
-# ⚙️ Engineering Meaning
+# 6. Integration Rules | ইন্টিগ্রেশনের নিয়ম
 
-| Quantity | Derivative gives | Integration gives |
-|---|---|---|
-| Position | Velocity | — |
-| Velocity | Acceleration | Position |
-| Charge | Current | — |
-| Current | — | Charge |
-| Energy | Power | — |
-| Power | — | Energy |
-| Motor angle | Angular speed | — |
-| Angular speed | Angular acceleration | Angle |
-| Temperature | Heating/cooling rate | Temperature change |
+## Rule 1 — Power Rule
 
----
+Use for:
 
-## Embedded Derivative
+```text
+x^n
+```
 
-An MCU can estimate derivative using:
+Formula:
 
-```c
-rate = (value_now - value_previous) / dt;
+```text
+∫ x^n dx = x^(n+1)/(n+1) + C
+```
+
+Condition:
+
+```text
+n ≠ -1
+```
+
+### Memory
+
+```text
+Power 1 বাড়াও
+তারপর নতুন power দিয়ে divide করো
 ```
 
 Example:
 
 ```text
-Position at 0 ms = 100 count
-Position at 1 ms = 106 count
+∫ 12x^3 dx
+
+Power: 3 -> 4
+
+= 12x^4 / 4
+= 3x^4 + C
+```
+
+---
+
+## Rule 2 — Constant Rule
+
+```text
+∫ a dx = ax + C
+```
+
+Example:
+
+```text
+∫ 6 dx = 6x + C
+```
+
+---
+
+## Rule 3 — Sum / Difference Rule
+
+Integrate each term separately.
+
+Example:
+
+```text
+∫ (20x^3 + 9x^2 - 14x + 6) dx
+```
+
+Term by term:
+
+```text
+20x^3  -> 5x^4
+9x^2   -> 3x^3
+-14x   -> -7x^2
+6      -> 6x
+```
+
+Therefore:
+
+```text
+= 5x^4 + 3x^3 - 7x^2 + 6x + C
+```
+
+---
+
+# 7. Why Do We Add `+ C`?
+
+Suppose:
+
+```text
+y = x^2 + 10
+```
+
+Derivative:
+
+```text
+y' = 2x
+```
+
+Also:
+
+```text
+y = x^2 + 100
+```
+
+Derivative is still:
+
+```text
+y' = 2x
+```
+
+So derivative loses the original constant.
+
+That is why:
+
+```text
+∫ 2x dx = x^2 + C
+```
+
+`C` means:
+
+```text
+unknown constant
+```
+
+To find the exact value of `C`, we need an initial condition.
+
+Example:
+
+```text
+y(0) = 10
+```
+
+If:
+
+```text
+y = x^2 + C
 ```
 
 Then:
 
-$$
-\text{Speed}
-\approx
-\frac{106-100}{0.001}
-=
-6000\;\text{count/s}
-$$
+```text
+10 = 0^2 + C
+```
+
+So:
+
+```text
+C = 10
+```
 
 ---
 
-## Embedded Integration
+# 8. Special Integrals
 
-An MCU can estimate integration using:
+```text
+∫ x^n dx     = x^(n+1)/(n+1) + C     , n ≠ -1
+
+∫ 1/x dx     = ln|x| + C
+
+∫ e^x dx     = e^x + C
+
+∫ sin x dx   = -cos x + C
+
+∫ cos x dx   = sin x + C
+```
+
+---
+
+# 9. Complete Integration Example
+
+Evaluate:
+
+```text
+∫ [12x^3 - 6x^2 + 2x^(-1/2) - 5x^(-2)] dx
+```
+
+### First term
+
+```text
+∫ 12x^3 dx
+= 12x^4 / 4
+= 3x^4
+```
+
+### Second term
+
+```text
+∫ -6x^2 dx
+= -6x^3 / 3
+= -2x^3
+```
+
+### Third term
+
+```text
+∫ 2x^(-1/2) dx
+```
+
+Increase power:
+
+```text
+-1/2 + 1 = 1/2
+```
+
+Then:
+
+```text
+= 2x^(1/2) / (1/2)
+= 4x^(1/2)
+= 4√x
+```
+
+### Fourth term
+
+```text
+∫ -5x^(-2) dx
+```
+
+Increase power:
+
+```text
+-2 + 1 = -1
+```
+
+Then:
+
+```text
+= -5x^(-1) / (-1)
+= 5x^(-1)
+= 5/x
+```
+
+Final:
+
+```text
+3x^4 - 2x^3 + 4√x + 5/x + C
+```
+
+---
+
+# 10. Numerical Integration | বাস্তব সেন্সর ডাটা
+
+In real life, values are often not constant.
+
+Suppose measured velocity is:
+
+```text
+Time    Velocity
+
+0 s     4 m/s
+1 s     6 m/s
+2 s    10 m/s
+```
+
+Use the trapezoidal method.
+
+From 0 to 1 s:
+
+```text
+Average velocity = (4 + 6) / 2
+                 = 5 m/s
+
+Distance = 5 × 1
+         = 5 m
+```
+
+From 1 to 2 s:
+
+```text
+Average velocity = (6 + 10) / 2
+                 = 8 m/s
+
+Distance = 8 × 1
+         = 8 m
+```
+
+Total:
+
+```text
+Distance = 5 + 8
+         = 13 m
+```
+
+This is practical numerical integration.
+
+---
+
+# 11. Practical Derivative in Embedded Systems
+
+Suppose an encoder gives:
+
+```text
+Time      Position
+
+0 ms      100 count
+1 ms      106 count
+```
+
+Approximate speed:
+
+```text
+speed = (new position - old position) / dt
+```
+
+So:
+
+```text
+speed = (106 - 100) / 0.001
+      = 6000 count/s
+```
+
+Typical embedded implementation:
+
+```c
+speed = (position_now - position_previous) / dt;
+```
+
+---
+
+# 12. Practical Integration in Embedded Systems
+
+For integration:
 
 ```c
 total += value * dt;
 ```
 
-Example for current:
+Examples:
+
+Current -> Charge:
 
 ```c
 charge += current * dt;
 ```
 
-Example for acceleration:
+Acceleration -> Velocity:
 
 ```c
 velocity += acceleration * dt;
 ```
 
+Velocity -> Position:
+
+```c
+position += velocity * dt;
+```
+
 ---
 
-# 🎛️ PID Connection
+# 13. Engineering Meaning
+
+```text
+Quantity           Derivative gives        Integration gives
+
+Position           Velocity                -
+Velocity           Acceleration            Position
+Charge             Current                 -
+Current            -                       Charge
+Energy             Power                   -
+Power              -                       Energy
+Motor angle        Angular speed           -
+Angular speed      Angular acceleration    Angle
+Temperature        Rate of temperature     Temperature change
+```
+
+---
+
+# 14. PID Control Connection
 
 PID means:
 
-$$
+```text
+P = Proportional
+I = Integral
+D = Derivative
+```
 
-\text{PID}
-=
-\text{Proportional}
+Basic PID equation:
+
+```text
+u(t) =
+Kp × e(t)
 +
-\text{Integral}
+Ki × integral of error
 +
-\text{Derivative}
+Kd × derivative of error
+```
 
-$$
+More explicitly:
 
-The continuous PID controller is:
+```text
+u(t) = Kp e(t) + Ki ∫e(t)dt + Kd de(t)/dt
+```
 
-$$
-u(t)
-=
-K_p e(t)
-+
-K_i\int_0^t e(\tau)\,d\tau
-+
-K_d\frac{de(t)}{dt}
-$$
+Where:
 
-where:
-
-- $e(t)$ = error
-- $K_p$ = proportional gain
-- $K_i$ = integral gain
-- $K_d$ = derivative gain
+```text
+e(t) = target - actual
+```
 
 ---
 
-## Easy PID Meaning
+## P Term
 
-| Term | Question | বাংলা |
-|---|---|---|
-| **P** | How big is the error **now**? | এখন error কত? |
-| **I** | How much error has **accumulated**? | error কতক্ষণ ধরে জমেছে? |
-| **D** | How fast is the error **changing**? | error কত দ্রুত পরিবর্তন হচ্ছে? |
+Question:
 
-### Memory
+```text
+How big is the error NOW?
+```
 
-> **P = Present**  
-> **I = Past accumulation**  
-> **D = Rate / trend**
+Bangla:
+
+```text
+এখন error কত?
+```
+
+Example:
+
+```text
+Target = 18 A
+Actual = 16 A
+
+Error = 2 A
+```
+
+P reacts immediately to this `2 A` error.
 
 ---
 
-## Example — E-Clutch Current Control
+## I Term
 
-Target:
+Question:
 
-$$
-I_{ref}=18A
-$$
+```text
+How much error has accumulated over time?
+```
+
+Bangla:
+
+```text
+error কতক্ষণ ধরে জমছে?
+```
+
+If:
+
+```text
+Target = 18 A
+Actual = 17 A
+```
+
+then:
+
+```text
+Error = 1 A
+```
+
+If this error stays for a long time, the integral term becomes larger and keeps correcting it.
+
+---
+
+## D Term
+
+Question:
+
+```text
+How fast is the error changing?
+```
+
+Bangla:
+
+```text
+error কত দ্রুত পরিবর্তন হচ্ছে?
+```
+
+Example:
+
+```text
+Target = 18 A
 
 Actual:
+10 A
+14 A
+17 A
+17.8 A
+```
 
-$$
-I_{actual}=17A
-$$
+The current is approaching the target very fast.
 
-Error:
-
-$$
-e=18-17=1A
-$$
-
-### P term
-
-Responds immediately to the current $1A$ error.
-
-### I term
-
-If the $1A$ error continues, it accumulates:
-
-$$
-\int e(t)\,dt
-$$
-
-and gradually increases correction.
-
-### D term
-
-Observes whether the current is approaching $18A$ quickly or slowly:
-
-$$
-\frac{de}{dt}
-$$
-
-The controller output can then adjust PWM duty.
+D sees this trend and can reduce aggressive correction before overshoot.
 
 ---
 
-# 🗺️ Final Memory Map
+# 15. E-Clutch PI Current Control Example
+
+Suppose:
+
+```text
+Target current = 18 A
+Actual current = 17 A
+```
+
+Then:
+
+```text
+error = 18 - 17
+      = 1 A
+```
+
+A PI controller may calculate:
+
+```text
+duty =
+feedforward duty
++
+Kp × error
++
+Ki × accumulated error
+```
+
+For a 12 V supply and 0.34 ohm coil:
+
+```text
+Feedforward duty ≈ (Iref × R) / Vbat
+```
+
+For 18 A:
+
+```text
+Duty ≈ (18 × 0.34) / 12
+     ≈ 0.51
+     ≈ 51%
+```
+
+Then the PI controller slightly increases or decreases duty based on measured current.
+
+---
+
+# 16. Final Memory Map
 
 ```text
 DERIVATIVE
-────────────────────────
+--------------------------------
 "How fast is it changing?"
 "কত দ্রুত পরিবর্তন হচ্ছে?"
 
-Total quantity → Rate
+Total -> Rate
 
-Position → Velocity
-Velocity → Acceleration
-Charge   → Current
-Energy   → Power
-Angle    → Angular Speed
+Position -> Velocity
+Velocity -> Acceleration
+Charge   -> Current
+Energy   -> Power
 
 
 INTEGRATION
-────────────────────────
+--------------------------------
 "How much total accumulated?"
 "মোট কত জমেছে?"
 
-Rate → Total quantity
+Rate -> Total
 
-Velocity → Distance
-Current  → Charge
-Power    → Energy
-Angular Speed → Angle
+Velocity -> Distance
+Current  -> Charge
+Power    -> Energy
+Speed    -> Position
 ```
 
 ---
 
-# 🧭 Which Rule Should I Use?
+# 17. Final Rule Selection
 
 ```text
-Expression
-   │
-   ├── axⁿ
-   │     └── Power Rule
-   │
-   ├── f(x) + g(x)
-   │     └── Differentiate term-by-term
-   │
-   ├── f(x) × g(x)
-   │     └── Product Rule
-   │
-   ├── f(x) / g(x)
-   │     └── Quotient Rule
-   │
-   └── f(g(x))
-         └── Chain Rule
+See ax^n
+-> Power Rule
+
+See +
+-> Do each term separately
+
+See function × function
+-> Product Rule
+
+See function / function
+-> Quotient Rule
+
+See function inside function
+-> Chain Rule
 ```
 
 ---
 
-## ⭐ Final 5 Things to Remember
+# 18. Five Things to Remember
 
-1. **Derivative = rate of change**
-2. **Integration = total accumulation**
-3. **Power Rule:** power comes down for derivative
-4. **Integration Power Rule:** power goes up by 1, then divide
-5. **PID:** P = present error, I = accumulated error, D = rate of error change
+1. **Derivative = rate of change**  
+   **Derivative = কত দ্রুত পরিবর্তন হচ্ছে**
+
+2. **Integration = total accumulation**  
+   **Integration = মোট কত জমেছে**
+
+3. **Derivative Power Rule**  
+   Power comes down, then power decreases by 1.
+
+4. **Integration Power Rule**  
+   Power increases by 1, then divide by the new power.
+
+5. **PID**  
+   `P = present error`  
+   `I = accumulated error`  
+   `D = rate of error change`
 
 ---
 
-<div align="center">
+## One-Line Engineering Memory
 
-### Control Engineering becomes easier when the mathematics has physical meaning.
+```text
+Derivative = Change / Time
+Integration = Sum of (Value × Small Time)
+PID = Present + Accumulated Past + Rate of Change
+```
 
-**Don't memorize only the formula — understand what the formula is measuring.**
+---
 
-</div>
+**Goal:** Do not memorize calculus only as formulas.  
+Always ask:
 
+```text
+Am I looking for a RATE?
+-> Derivative
+
+Am I looking for a TOTAL?
+-> Integration
+```
