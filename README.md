@@ -159,7 +159,7 @@ $$
 ## 2. Power Rule
 
 $$
-\boxed{\frac{d}{dx}(x^n)=nx^{n-1}}
+\frac{d}{dx}(x^n)=nx^{n-1}
 $$
 
 ### Memory
@@ -177,7 +177,7 @@ $$
 $$
 
 $$
-\boxed{=30x^2}
+=30x^2
 $$
 
 **Use when:** the term looks like $ax^n$.
@@ -203,11 +203,11 @@ $$
 Then:
 
 $$
-\boxed{
+
 \frac{dy}{dx}
 =
 20x^3+9x^2-14x+6
-}
+
 $$
 
 ---
@@ -225,9 +225,9 @@ $$
 then:
 
 $$
-\boxed{
+
 \frac{dy}{dx}=u'v+uv'
-}
+
 $$
 
 ### Memory
@@ -263,9 +263,9 @@ y'=(4x)(x^3-4)+(2x^2+3)(3x^2)
 $$
 
 $$
-\boxed{
+
 y'=10x^4+9x^2-16x
-}
+
 $$
 
 **Use when:**  
@@ -288,11 +288,11 @@ $$
 then:
 
 $$
-\boxed{
+
 \frac{dy}{dx}
 =
 \frac{u'v-uv'}{v^2}
-}
+
 $$
 
 ### Memory
@@ -331,10 +331,10 @@ y'
 $$
 
 $$
-\boxed{
+
 y'=
 \frac{x^2+2x-3}{(x+1)^2}
-}
+
 $$
 
 ---
@@ -352,11 +352,11 @@ $$
 then:
 
 $$
-\boxed{
+
 \frac{dy}{dx}
 =
 f'(g(x))\,g'(x)
-}
+
 $$
 
 ### Memory
@@ -385,9 +385,9 @@ $$
 Therefore:
 
 $$
-\boxed{
+
 y'=30x(3x^2+2)^4
-}
+
 $$
 
 ---
@@ -425,9 +425,9 @@ $$
 Therefore:
 
 $$
-\boxed{
+
 y'=2x\cos(x^2)
-}
+
 $$
 
 ---
@@ -437,10 +437,10 @@ $$
 Consider:
 
 $$
-\boxed{
+
 y=
 \frac{x^2(3x+1)^4}{x+2}
-}
+
 $$
 
 This contains:
@@ -525,11 +525,11 @@ $$
 Factor:
 
 $$
-\boxed{
+
 u'
 =
 2x(3x+1)^3(9x+1)
-}
+
 $$
 
 ---
@@ -596,7 +596,7 @@ $$
 Therefore:
 
 $$
-\boxed{
+
 \frac{dy}{dx}
 =
 \frac{
@@ -604,7 +604,7 @@ x(3x+1)^3(15x^2+37x+4)
 }{
 (x+2)^2
 }
-}
+
 $$
 
 ---
@@ -616,11 +616,11 @@ $$
 For $n\neq-1$:
 
 $$
-\boxed{
+
 \int x^n\,dx
 =
 \frac{x^{n+1}}{n+1}+C
-}
+
 $$
 
 ### Memory
@@ -639,9 +639,9 @@ $$
 $$
 
 $$
-\boxed{
+
 =3x^4+C
-}
+
 $$
 
 ---
@@ -649,9 +649,9 @@ $$
 ## 2. Constant Rule
 
 $$
-\boxed{
+
 \int a\,dx=ax+C
-}
+
 $$
 
 ### Example
@@ -659,7 +659,7 @@ $$
 $$
 \int 6\,dx
 =
-\boxed{6x+C}
+6x+C
 $$
 
 ---
@@ -704,9 +704,9 @@ $$
 Therefore:
 
 $$
-\boxed{
+
 5x^4+3x^3-7x^2+6x+C
-}
+
 $$
 
 ---
@@ -730,7 +730,7 @@ Therefore derivative loses the original constant.
 So after integration we write:
 
 $$
-\boxed{+C}
++C
 $$
 
 To recover the exact constant, we need an **initial condition**.
@@ -841,9 +841,9 @@ $$
 Final answer:
 
 $$
-\boxed{
+
 3x^4-2x^3+4\sqrt{x}+\frac5x+C
-}
+
 $$
 
 ---
@@ -885,9 +885,9 @@ $$
 Total:
 
 $$
-\boxed{
+
 d=5+8=13\,m
-}
+
 $$
 
 This is **numerical integration**.
@@ -964,7 +964,7 @@ velocity += acceleration * dt;
 PID means:
 
 $$
-\boxed{
+
 \text{PID}
 =
 \text{Proportional}
@@ -972,7 +972,7 @@ $$
 \text{Integral}
 +
 \text{Derivative}
-}
+
 $$
 
 The continuous PID controller is:
