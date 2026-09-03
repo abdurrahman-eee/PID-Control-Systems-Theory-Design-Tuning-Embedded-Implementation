@@ -79,7 +79,7 @@ $$
 
 ### Practical idea
 
-If position changes from \(4\,m\) to \(9\,m\) in \(2\,s\):
+If position changes from $4\,m$ to $9\,m$ in $2\,s$:
 
 $$
 v=\frac{\Delta x}{\Delta t}
@@ -112,7 +112,7 @@ $$
 \text{Power} \xrightarrow{\int dt} \text{Energy}
 $$
 
-If current is \(2\,A\) for \(5\,s\):
+If current is $2\,A$ for $5\,s$:
 
 $$
 Q=\int I\,dt
@@ -152,7 +152,7 @@ $$
 \frac{d}{dx}(10)=0
 $$
 
-**Use when:** the term contains no \(x\).
+**Use when:** the term contains no $x$.
 
 ---
 
@@ -180,7 +180,7 @@ $$
 \boxed{=30x^2}
 $$
 
-**Use when:** the term looks like \(ax^n\).
+**Use when:** the term looks like $ax^n$.
 
 ---
 
@@ -269,9 +269,9 @@ y'=10x^4+9x^2-16x
 $$
 
 **Use when:**  
-\[
+$$
 (\text{function})\times(\text{function})
-\]
+$$
 
 ---
 
@@ -396,13 +396,13 @@ $$
 
 | Function | Derivative |
 |---|---|
-| \(C\) | \(0\) |
-| \(x^n\) | \(nx^{n-1}\) |
-| \(\sin x\) | \(\cos x\) |
-| \(\cos x\) | \(-\sin x\) |
-| \(\tan x\) | \(\sec^2 x\) |
-| \(e^x\) | \(e^x\) |
-| \(\ln x\) | \(\frac{1}{x}\) |
+| $C$ | $0$ |
+| $x^n$ | $nx^{n-1}$ |
+| $\sin x$ | $\cos x$ |
+| $\cos x$ | $-\sin x$ |
+| $\tan x$ | $\sec^2 x$ |
+| $e^x$ | $e^x$ |
+| $\ln x$ | $\frac{1}{x}$ |
 
 ### Example: Trigonometric + Chain Rule
 
@@ -494,7 +494,7 @@ $$
 a'=2x
 $$
 
-For \(b\), use Chain Rule:
+For $b$, use Chain Rule:
 
 $$
 b'
@@ -613,7 +613,7 @@ $$
 
 ## 1. Power Rule
 
-For \(n\neq-1\):
+For $n\neq-1$:
 
 $$
 \boxed{
@@ -711,7 +711,7 @@ $$
 
 ---
 
-## Why \(+C\)?
+## Why $+C$?
 
 Because:
 
@@ -753,11 +753,11 @@ $$
 
 | Function | Integral |
 |---|---|
-| \(x^n\) | \(\frac{x^{n+1}}{n+1}+C\) |
-| \(\frac{1}{x}\) | \(\ln|x|+C\) |
-| \(e^x\) | \(e^x+C\) |
-| \(\sin x\) | \(-\cos x+C\) |
-| \(\cos x\) | \(\sin x+C\) |
+| $x^n$ | $\frac{x^{n+1}}{n+1}+C$ |
+| $\frac{1}{x}$ | $\ln|x|+C$ |
+| $e^x$ | $e^x+C$ |
+| $\sin x$ | $-\cos x+C$ |
+| $\cos x$ | $\sin x+C$ |
 
 ---
 
@@ -856,9 +856,9 @@ Suppose velocity is measured:
 
 | Time | Velocity |
 |---:|---:|
-| \(0s\) | \(4\,m/s\) |
-| \(1s\) | \(6\,m/s\) |
-| \(2s\) | \(10\,m/s\) |
+| $0s$ | $4\,m/s$ |
+| $1s$ | $6\,m/s$ |
+| $2s$ | $10\,m/s$ |
 
 Using the trapezoidal method:
 
@@ -989,10 +989,10 @@ $$
 
 where:
 
-- \(e(t)\) = error
-- \(K_p\) = proportional gain
-- \(K_i\) = integral gain
-- \(K_d\) = derivative gain
+- $e(t)$ = error
+- $K_p$ = proportional gain
+- $K_i$ = integral gain
+- $K_d$ = derivative gain
 
 ---
 
@@ -1034,11 +1034,11 @@ $$
 
 ### P term
 
-Responds immediately to the current \(1A\) error.
+Responds immediately to the current $1A$ error.
 
 ### I term
 
-If the \(1A\) error continues, it accumulates:
+If the $1A$ error continues, it accumulates:
 
 $$
 \int e(t)\,dt
@@ -1048,7 +1048,7 @@ and gradually increases correction.
 
 ### D term
 
-Observes whether the current is approaching \(18A\) quickly or slowly:
+Observes whether the current is approaching $18A$ quickly or slowly:
 
 $$
 \frac{de}{dt}
