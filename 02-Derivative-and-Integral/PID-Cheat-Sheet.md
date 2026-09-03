@@ -25,6 +25,21 @@ Bigger error → bigger push. Alone, it always leaves a small steady-state error
 
 ---
 
+## One example used for the whole sheet
+
+So every number below lines up, every section (I, D, and the combined PID at the end) reuses **the same speed-control loop**:
+
+```
+dt = 0.1 s          (control loop runs every 0.1 s)
+Kp = 3, Ki = 2, Kd = 0.5
+e(t) sequence:  t=0.0 → e=6 (starting error, used as e_prev for the first row)
+                t=0.1 → e=5
+                t=0.2 → e=4
+                t=0.3 → e=1   (error suddenly drops fast here)
+```
+
+---
+
 ## 2. Integral (I) — the memory term
 
 ### Why it exists
@@ -46,15 +61,15 @@ I_out = Ki * integral_sum
 - `integral_sum` keeps growing/shrinking as long as error exists
 
 ### Worked example
-Speed control loop, `dt = 0.1 s`, `Ki = 2`.
+Using the example above (`dt = 0.1 s`, `Ki = 2`):
 
 | Time | e(t) | integral_sum (running total) | I_out = Ki × sum |
 |---|---|---|---|
-| t=0.1s | 5 | 5×0.1 = 0.5 | 1.0 |
+| t=0.1s | 5 | 0 + 5×0.1 = 0.5 | 1.0 |
 | t=0.2s | 4 | 0.5 + 4×0.1 = 0.9 | 1.8 |
-| t=0.3s | 3 | 0.9 + 3×0.1 = 1.2 | 2.4 |
+| t=0.3s | 1 | 0.9 + 1×0.1 = 1.0 | 2.0 |
 
-Even as error `e(t)` shrinks (5→4→3), `I_out` keeps **growing**, because it's summing everything so far. This is exactly what removes steady-state error.
+Even as error `e(t)` shrinks (5→4→1), `I_out` keeps **growing** (1.0→1.8→2.0), because it's summing everything so far. This is exactly what removes steady-state error.
 
 ### Watch out for: Integral Windup
 If error stays large for a long time (e.g., motor physically blocked), `integral_sum` grows huge → causes big overshoot when the block clears. Fix = **clamp** the integral term:
@@ -83,7 +98,7 @@ D_out = Kd * (e(t) - e_prev) / dt
 - `(e(t) - e_prev)` = how much error changed this tick
 
 ### Worked example
-Same loop, `dt = 0.1 s`, `Kd = 0.5`.
+Same loop as above (`dt = 0.1 s`, `Kd = 0.5`):
 
 | Time | e(t) | e_prev | Δe = e - e_prev | D_out = Kd × Δe/dt |
 |---|---|---|---|---|
@@ -120,17 +135,23 @@ prev_error = error;
 ```
 
 ### Full numeric example
-`Kp=3, Ki=2, Kd=0.5, dt=0.1s`, using row t=0.2s from above (`e=4, integral_sum=0.9, derivative=-5`... using earlier D table row at t=0.2s: Δe=-1 → derivative=-10... let's use t=0.3s row for a clean combined example instead):
-
-At **t = 0.3 s**: `e = 3`, `integral_sum = 1.2`, `derivative = (3-4)/0.1 = -10`
+Same loop throughout (`Kp=3, Ki=2, Kd=0.5, dt=0.1s`). Take the row at **t = 0.3 s**, pulling the numbers straight from the I and D tables above:
 
 ```
-P_out = 3 * 3        = 9
-I_out = 2 * 1.2       = 2.4
-D_out = 0.5 * (-10)   = -5
-
-u(t) = 9 + 2.4 - 5 = 6.4   ← final motor/actuator command
+e(t)          = 1      (from the e(t) sequence)
+integral_sum  = 1.0    (from the Integral table, t=0.3s)
+derivative    = (e - e_prev)/dt = (1-4)/0.1 = -30   (from the Derivative table, t=0.3s)
 ```
+
+```
+P_out = Kp × e            = 3 × 1     = 3
+I_out = Ki × integral_sum = 2 × 1.0   = 2
+D_out = Kd × derivative   = 0.5 × -30 = -15
+
+u(t) = P_out + I_out + D_out = 3 + 2 - 15 = -10   ← final motor/actuator command
+```
+
+This negative output makes sense: at t=0.3s the error crashed from 4 down to 1 in one tick — the system is rushing toward the setpoint — so D dominates and pulls the command down hard to brake before it overshoots.
 
 ---
 
