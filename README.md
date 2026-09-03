@@ -1,46 +1,67 @@
-<div align="center">
+# PID Control Systems
 
-# Calculus for PID & Control Engineering
+## Theory, design, tuning, and embedded implementation
 
-### Derivative • Integration • PID Control  
-### ডেরিভেটিভ • ইন্টিগ্রেশন • PID কন্ট্রোল
+This is a practical course for moving from **"what is feedback?"** to a
+reliable controller running on an STM32. Every chapter follows the same rhythm:
 
-**A clean, practical guide for understanding the mathematics behind control systems.**  
-**Formula মুখস্থ নয় — কোন formula কেন ও কখন ব্যবহার হয়, সেটাই মূল লক্ষ্য।**
+1. **Understand** the physical idea in plain language.
+2. **Model** it with the smallest useful equation.
+3. **Calculate** a worked example.
+4. **Implement** it in discrete time.
+5. **Verify** it with measurements, plots, and limits.
 
-</div>
+The examples use motors, coils, current loops, speed loops, and position loops.
+They are also applicable to temperature, pressure, flow, and other feedback
+systems.
 
----
+## Learning path
 
-## 1. The Big Picture | মূল ধারণা
+| Chapter | Outcome |
+|---|---|
+| [01 Fundamentals](01-Fundamentals/README.md) | Understand feedback, error, sampling, PWM, and limits |
+| [02 Derivative and Integral](02-Derivative-and-Integral/README.md) | Build the discrete-time math behind I and D |
+| [03 P, PI, and PID](03-P-PI-PID-Control/README.md) | Choose the right controller structure |
+| [04 System Modeling](04-System-Modeling/README.md) | Turn a physical plant into a useful model |
+| [05 PID Tuning](05-PID-Tuning/README.md) | Tune gains from response data |
+| [06 Current Control](06-Current-Control/README.md) | Design a fast electrical current loop |
+| [07 Speed Control](07-Speed-Control/README.md) | Add a slower outer speed loop |
+| [08 Position Control](08-Position-Control/README.md) | Control position without fighting the mechanics |
+| [09 Simulations](09-Simulations/README.md) | Test behavior before connecting hardware |
+| [10 Embedded Implementation](10-Embedded-Implementation/README.md) | Write deterministic, protected controller code |
+| [11 STM32 Examples](11-STM32-Examples/README.md) | Map the design onto timers, ADC, CAN, and FreeRTOS |
+| [12 Practical Projects](12-Practical-Projects/README.md) | Build, instrument, tune, and validate complete systems |
 
-| Concept | Easy Meaning | বাংলা |
-|---|---|---|
-| **Derivative** | How fast something is changing | কোনো কিছু **কত দ্রুত পরিবর্তন হচ্ছে** |
-| **Integration** | How much has accumulated in total | সব ছোট পরিবর্তন যোগ করে **মোট কত হয়েছে** |
-
-### Easy engineering map
+## A compact mental model
 
 ```text
-Position  --Derivative-->  Velocity  --Derivative-->  Acceleration
-
-Acceleration  --Integration-->  Velocity  --Integration-->  Position
+setpoint -> compare -> controller -> actuator -> plant -> sensor
+                ^                                      |
+                +-------------- measured value -------+
 ```
 
-Other examples:
+The central rule is simple:
 
-```text
-Charge   --Derivative-->  Current
-Energy   --Derivative-->  Power
+> **Measure -> compare -> correct -> limit -> repeat**
 
-Current  --Integration--> Charge
-Power    --Integration--> Energy
-```
+## Prerequisites
 
-### One-line memory
+- Basic algebra and graphs
+- Familiarity with C and a microcontroller timer interrupt
+- A way to record time-stamped setpoint, measurement, output, and fault data
 
-> **Derivative = Change ÷ Time**  
-> **Integration = Sum of (Value × Small Time)**
+## Engineering conventions
+
+- Use SI units internally: seconds, amperes, volts, radians, and newtons.
+- Keep the control period fixed and measure it rather than assuming it.
+- Saturate outputs deliberately and design anti-windup with the actuator limit.
+- Treat sensor plausibility, startup, timeout, and fault behavior as part of the controller.
+- Tune on a current-limited test setup before applying full mechanical load.
+
+## Repository status
+
+The chapters are being developed in order. Chapter 01 is the foundation; each
+later chapter adds one layer of theory and one layer of implementation detail.
 
 ---
 
